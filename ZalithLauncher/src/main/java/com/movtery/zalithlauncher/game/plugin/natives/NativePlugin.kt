@@ -16,16 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-package com.movtery.zalithlauncher.game.plugin
+package com.movtery.zalithlauncher.game.plugin.natives
 
-/**
- * 启用其已识别到的软件插件
- * @param packageName 包名
- * @param appName 软件名称
- * @param appVersion 应用版本
- */
-abstract class ApkPlugin(
-    val packageName: String,
-    val appName: String,
-    val appVersion: String
+import com.movtery.zalithlauncher.game.plugin.ApkPlugin
+
+class NativePlugin(
+    packageName: String,
+    appName: String,
+    appVersion: String,
+    val displayName: String,
+    val minMCVer: String? = null,
+    val maxMCVer: String? = null,
+    val path: String,
+    val envList: List<String>
+): ApkPlugin(
+    packageName = packageName,
+    appName = appName,
+    appVersion = appVersion
 )

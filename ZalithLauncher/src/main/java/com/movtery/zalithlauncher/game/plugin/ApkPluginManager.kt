@@ -18,14 +18,27 @@
 
 package com.movtery.zalithlauncher.game.plugin
 
-/**
- * 启用其已识别到的软件插件
- * @param packageName 包名
- * @param appName 软件名称
- * @param appVersion 应用版本
- */
-abstract class ApkPlugin(
-    val packageName: String,
-    val appName: String,
-    val appVersion: String
-)
+import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.os.Bundle
+import com.movtery.zalithlauncher.utils.string.isNotEmptyOrBlank
+
+abstract class ApkPluginManager {
+    abstract fun parseApkPlugin(
+        context: Context,
+        info: ApplicationInfo,
+        loaded: (ApkPlugin) -> Unit = {}
+    )
+
+    protected fun Bundle.getVersionString(key: String): String? {
+        return if (containsKey(key)) {
+            runCatching {
+                when (val o = get(key)) {
+                    is String -> o
+                    is Number -> o.toString()
+                    else -> null
+                }
+            }.getOrNull()?.takeIf { it.isNotEmptyOrBlank() }
+        } else null
+    }
+}
